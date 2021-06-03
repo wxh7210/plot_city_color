@@ -158,8 +158,8 @@ ax.tick_params(labelsize=15)  #x和y轴字体大小
 ax.set_extent([112.9,123,24.3,35.5],ccrs.PlateCarree()) #yrd limit the map to lon1,lon2,lat1,lat2
 
 #plot the map
-shp_path = r'H:\2021\4-23 python_Rbf插值\shp_files/'
-yrd = shapereader.Reader(shp_path+r'四省一市cities_revised202105.shp').geometries()
+shp_path = r'./shp_files/'
+yrd = shapereader.Reader(shp_path+r'yrd_cities_revised202105.shp').geometries()
 ax.add_geometries(yrd,ccrs.PlateCarree(),edgecolor="black",facecolor="None",alpha=0.5)
 
 #add lat and lon labels
@@ -171,7 +171,7 @@ ax.xaxis.set_major_formatter(lon_formatter)
 ax.yaxis.set_major_formatter(lat_formatter)
 
 #read the data of city forecast accuracy scores of 52 city in YRD region
-data = pd.read_excel(r"./长三角41城市落区图5月预报准确率.xlsx",sheet_name='预报准确率')
+data = pd.read_excel(r"./yrd_cities_forecast_scores_of_May.xlsx",sheet_name='预报准确率')
 
 #plot the color of each city according to the forecast accuracy scores
 city_colors=[] 
