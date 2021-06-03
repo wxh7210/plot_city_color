@@ -23,7 +23,7 @@ import matplotlib as mpl
 
 
 
-def plot_underover(ax,title,citynames,lats,lons,over,under):
+def plot_underover(ax,title,citynames,lats,lons,over,under,city_yanse):
     """
     Mark each city's number of over- and under-estimate of 
     AQI on the YRD map.
@@ -41,6 +41,8 @@ def plot_underover(ax,title,citynames,lats,lons,over,under):
     over, under: pandas.serise
         the number of over and under esitmate of 
         AQI of each city
+    city_yanse: list
+        the 52 cities' color
     -------
     Return None.
     
@@ -55,20 +57,30 @@ def plot_underover(ax,title,citynames,lats,lons,over,under):
     norm = mpl.colors.BoundaryNorm(bounds,cmap.N)
    
    
-   #mark the over and under estimates
-    for i in range(len(over)):
-        ax.text(lons[i]-0.2,lats[i]+0.05,over[i],fontsize=12,c="black",weight="bold")
-        ax.text(lons[i]-0.2,lats[i]-0.13,under[i],fontsize=12,c="black")
-   #set legend
+   #mark the over and under estimates and city name
+    for i in range(len(over)-1):
+        if (city_yanse[i]=='darkblue'): #mark color is changable according to the city's color
+            set_color = 'white'
+        else:
+            set_color = 'black'
+        ax.text(lons[i]-0.2,lats[i]+0.05,over[i],fontsize=12,c=set_color,weight="bold")
+        ax.text(lons[i]-0.2,lats[i]-0.13,under[i],fontsize=12,c=set_color,weight='bold')
+        ax.text(lons[i]-0.05,lats[i],citynames[i],ha = "left",va="top",c=set_color,fontsize=7,weight='bold')
+    #Zhoushan is on the sea, so always dark
+    ax.text(lons[i+1]-0.2,lats[i+1]+0.05,over[i+1],fontsize=12,c='black',weight="bold")
+    ax.text(lons[i+1]-0.2,lats[i+1]-0.13,under[i+1],fontsize=12,c='black',weight='bold')
+    ax.text(lons[i+1]-0.05,lats[i+1],citynames[i+1],ha = "left",va="top",c='black',fontsize=7,weight='bold')   
+   
+    #set legend
     cb_ax = fig.add_axes([0.78,0.14,0.02,0.2])  #(x,y,width,height)
     cb = mpl.colorbar.ColorbarBase(cb_ax,cmap=cmap,norm=norm,ticks=bounds,orientation='vertical')
     cb.set_label("预报准确率  单位：%",fontsize=10)
     ax.text(120.3,25.4,"预报偏高次数",fontsize=12,c='black')
     ax.text(120.3,25.1,"预报偏低次数",fontsize=12,c='black')
    
-    #mark cities' name
-    for i in range(len(citynames)):
-        ax.text(lons[i]-0.05,lats[i],citynames[i],ha = "left",va="top",fontsize=7)
+    # #mark cities' name
+    # for i in range(len(citynames)):
+    #     ax.text(lons[i]-0.05,lats[i],citynames[i],ha = "left",va="top",fontsize=7)
     #save image
     plt.savefig(r"./output/"+title+".png",dpi=300.0)
     plt.show()
@@ -162,13 +174,14 @@ ax.yaxis.set_major_formatter(lat_formatter)
 data = pd.read_excel(r"./长三角41城市落区图5月预报准确率.xlsx",sheet_name='预报准确率')
 
 #plot the color of each city according to the forecast accuracy scores
+city_colors=[] 
 for i in range(len(data)):
-    plot_zql_color(ax, data.城市[i], data.预报准确率[i])
-    
+    city_colors.append(plot_zql_color(ax, data.城市[i], data.预报准确率[i]))
+
 #mark the number of over- and under-estimates of each city
 plot_underover(ax=ax,title='2021年5月长三角城市24h预报准确率',
           citynames=data["city"],lats=data["lat"],lons=data['lon'],
-          over=data["预报偏高"],under=data["预报偏低"])
+          over=data["预报偏高"],under=data["预报偏低"],city_yanse=city_colors)
 
 
 
