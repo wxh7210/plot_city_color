@@ -104,7 +104,7 @@ def plot_zql_color(ax,city,zql):
         facecolor of city
 
     """
-    shpfile=r"H:\2021\4-23 python_Rbf插值\shp_files/四省一市cities_revised202105.shp"
+    shpfile=r"./shp_files/yrd_cities_revised202105.shp"
     sf = shapefile.Reader(shpfile,encoding='utf-8')
     vertices = []
     codes = []
