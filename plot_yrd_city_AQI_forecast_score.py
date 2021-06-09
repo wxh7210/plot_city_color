@@ -59,17 +59,17 @@ def plot_underover(ax,title,citynames,lats,lons,over,under,city_yanse):
    
    #mark the over and under estimates and city name
     for i in range(len(over)-1):
-        if (city_yanse[i]=='darkblue'): #mark color is changable according to the city's color
+        if (city_yanse[i]=='darkblue' or city_yanse[i]=='blue'): #mark color is changable according to the city's color
             set_color = 'white'
         else:
             set_color = 'black'
         ax.text(lons[i]-0.2,lats[i]+0.05,over[i],fontsize=12,c=set_color,weight="bold")
         ax.text(lons[i]-0.2,lats[i]-0.13,under[i],fontsize=12,c=set_color,weight='bold')
-        ax.text(lons[i]-0.05,lats[i],citynames[i],ha = "left",va="top",c=set_color,fontsize=7,weight='bold')
+        ax.text(lons[i]-0.01,lats[i]+0.1,citynames[i],ha = "left",va="top",c=set_color,fontsize=7,weight='bold')
     #Zhoushan is on the sea, so always dark
     ax.text(lons[i+1]-0.2,lats[i+1]+0.05,over[i+1],fontsize=12,c='black',weight="bold")
     ax.text(lons[i+1]-0.2,lats[i+1]-0.13,under[i+1],fontsize=12,c='black',weight='bold')
-    ax.text(lons[i+1]-0.05,lats[i+1],citynames[i+1],ha = "left",va="top",c='black',fontsize=7,weight='bold')   
+    ax.text(lons[i+1]-0.01,lats[i+1]+0.1,citynames[i+1],ha = "left",va="top",c='black',fontsize=7,weight='bold')   
    
     #set legend
     cb_ax = fig.add_axes([0.78,0.14,0.02,0.2])  #(x,y,width,height)
