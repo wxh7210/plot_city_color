@@ -63,12 +63,12 @@ def plot_underover(ax,title,citynames,lats,lons,over,under,city_yanse):
             set_color = 'white'
         else:
             set_color = 'black'
-        ax.text(lons[i]-0.2,lats[i]+0.05,over[i],fontsize=12,c=set_color,weight="bold")
-        ax.text(lons[i]-0.2,lats[i]-0.13,under[i],fontsize=12,c=set_color,weight='bold')
+        ax.text(lons[i]-0.2,lats[i]+0.05,over[i],fontsize=12,fontproperties='Times New Roman',c=set_color,weight="bold")
+        ax.text(lons[i]-0.2,lats[i]-0.13,under[i],fontsize=12,fontproperties='Times New Roman',c=set_color,weight='bold')
         ax.text(lons[i]-0.01,lats[i]+0.1,citynames[i],ha = "left",va="top",c=set_color,fontsize=7,weight='bold')
     #Zhoushan is on the sea, so always dark
-    ax.text(lons[i+1]-0.2,lats[i+1]+0.05,over[i+1],fontsize=12,c='black',weight="bold")
-    ax.text(lons[i+1]-0.2,lats[i+1]-0.13,under[i+1],fontsize=12,c='black',weight='bold')
+    ax.text(lons[i+1]-0.2,lats[i+1]+0.05,over[i+1],fontsize=12,fontproperties='Times New Roman',c='black',weight="bold")
+    ax.text(lons[i+1]-0.2,lats[i+1]-0.13,under[i+1],fontsize=12,fontproperties='Times New Roman',c='black',weight='bold')
     ax.text(lons[i+1]-0.01,lats[i+1]+0.1,citynames[i+1],ha = "left",va="top",c='black',fontsize=7,weight='bold')   
    
     #set legend
