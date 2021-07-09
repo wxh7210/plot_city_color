@@ -170,17 +170,37 @@ lat_formatter = LatitudeFormatter()
 ax.xaxis.set_major_formatter(lon_formatter)
 ax.yaxis.set_major_formatter(lat_formatter)
 
-#read the data of city forecast accuracy scores of 52 city in YRD region
-data = pd.read_excel(r"./yrd_cities_forecast_scores_of_May.xlsx",sheet_name='预报准确率')
+#读取数据，计算预报准确率、预报偏高次数、预报偏低次数
+df = pd.read_excel(r"./20210501-20210531落区图评估 .xls",sheet_name='落区预报结果')
+df_ll = pd.read_excel(r"./52个城市经纬度.xlsx")
+df['城市']=df['城市'].map(lambda x:str(x)[:-1])  #去掉城市名称中的最后一个字“市”
+df["预报_AQI"]=df['预报等级'].map({'优':50,'良':100,'轻度':150,'中度':200,'重度':250,'严重':300})
+df["实况_AQI"]=df['实况等级'].map({'优':50,'良':100,'轻度':150,'中度':200,'重度':250,'严重':300})
+
+#计数：预报准确、偏高、偏低的次数
+df["预报准确"]=0
+df["预报偏高"]=0
+df["预报偏低"]=0
+for ii in range(len(df["城市"])):
+    if(df["预报_AQI"][ii] == df["实况_AQI"][ii]):
+        df["预报准确"][ii] = 1
+    if(df["预报_AQI"][ii] > df["实况_AQI"][ii]):
+        df["预报偏高"][ii] = 1
+    if(df["预报_AQI"][ii] < df["实况_AQI"][ii]):
+        df["预报偏低"][ii] = 1
+
+data = df.groupby("城市",as_index=False).sum() #as_index作用是不让"城市"作为index
+data = pd.merge(data,df_ll,on='城市')
+data["预报准确率"]= data["预报准确"]/(data["预报准确"] + data["预报偏高"] + data["预报偏低"]) * 100
 
 #plot the color of each city according to the forecast accuracy scores
 city_colors=[] 
 for i in range(len(data)):
-    city_colors.append(plot_zql_color(ax, data.城市[i], data.预报准确率[i]))
+    city_colors.append(plot_zql_color(ax, data.城市[i]+"市", data.预报准确率[i]))
 
 #mark the number of over- and under-estimates of each city
 plot_underover(ax=ax,title='2021年5月长三角城市24h预报准确率',
-          citynames=data["city"],lats=data["lat"],lons=data['lon'],
+          citynames=data["城市"],lats=data["lat"],lons=data['lon'],
           over=data["预报偏高"],under=data["预报偏低"],city_yanse=city_colors)
 
 
