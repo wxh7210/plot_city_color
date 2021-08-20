@@ -63,8 +63,8 @@ def plot_underover(ax,title,citynames,lats,lons,over,under,city_yanse):
             set_color = 'white'
         else:
             set_color = 'black'
-        ax.text(lons[i]-0.2,lats[i]+0.05,over[i],fontsize=12,fontproperties='Times New Roman',c=set_color,weight="bold")
-        ax.text(lons[i]-0.2,lats[i]-0.13,under[i],fontsize=12,fontproperties='Times New Roman',c=set_color,weight='bold')
+        ax.text(lons[i]-0.2,lats[i]+0.07,over[i],fontproperties='Times New Roman',c=set_color,fontsize=15,weight="normal")
+        ax.text(lons[i]-0.2,lats[i]-0.17,under[i],fontproperties='Times New Roman',c=set_color,fontsize=15,weight='normal')
         ax.text(lons[i]-0.01,lats[i]+0.1,citynames[i],ha = "left",va="top",c=set_color,fontsize=7,weight='bold')
     #Zhoushan is on the sea, so always dark
     ax.text(lons[i+1]-0.2,lats[i+1]+0.05,over[i+1],fontsize=12,fontproperties='Times New Roman',c='black',weight="bold")
@@ -171,7 +171,7 @@ ax.xaxis.set_major_formatter(lon_formatter)
 ax.yaxis.set_major_formatter(lat_formatter)
 
 #读取数据，计算预报准确率、预报偏高次数、预报偏低次数
-df = pd.read_excel(r"./20210501-20210531落区图评估 .xls",sheet_name='落区预报结果')
+df = pd.read_excel(r"./20210701-20210731落区图评估.xls",sheet_name='落区预报结果')
 df_ll = pd.read_excel(r"./52个城市经纬度.xlsx")
 df['城市']=df['城市'].map(lambda x:str(x)[:-1])  #去掉城市名称中的最后一个字“市”
 df["预报_AQI"]=df['预报等级'].map({'优':50,'良':100,'轻度':150,'中度':200,'重度':250,'严重':300})
@@ -199,7 +199,7 @@ for i in range(len(data)):
     city_colors.append(plot_zql_color(ax, data.城市[i]+"市", data.预报准确率[i]))
 
 #mark the number of over- and under-estimates of each city
-plot_underover(ax=ax,title='2021年5月长三角城市24h预报准确率',
+plot_underover(ax=ax,title='2021年7月长三角城市24h预报准确率',
           citynames=data["城市"],lats=data["lat"],lons=data['lon'],
           over=data["预报偏高"],under=data["预报偏低"],city_yanse=city_colors)
 
